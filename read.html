@@ -10,14 +10,14 @@
 $(function(){
   var $show = $('#show');
   var a = {
-      sheetUrl : 'https://docs.google.com/spreadsheets/d/136DfKPv9xmH_s56H_J9BF2VixdIuigQNtJ4cfAKoRTQ/edit#gid=0',
+      sheetUrl : 'https://docs.google.com/~',
       sheetTag : '工作表1',
       row: 1,
       col: 2,
       endRow : 2,
       endCol : 3
   };
-  $.get('https://script.google.com/macros/s/AKfycbzzDYzfA49VzhQPa6ISPtmZsSJO63D_EnOSA4dCM609Ve0Bqos/exec',a, function(data){
+  $.get('https://script.google.com/~',a, function(data){
     var d = data.split(',');
     var arr = [];
     for(var i=0; i<(a.endRow-a.row+1); i++){
