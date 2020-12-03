@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Google app script Excel</title>
+  <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+  <style>
+  	input{
+  		width:300px;
+  		font-size:15px;
+  		margin:2px 0;
+  		padding:2px 5px;
+  	}
+  </style>
+  
+</head>
+
+<body>
+  Google App Script：<input id="appUrl" value="https://script.google.com/macros/s/AKfycbyCyvazuQJf_CBlmL47oBPDvDmd7TyPdCaeKOusMiQ51MEzXiQI/exec"><br/> 
+  試算表網址：<input id="sheetsUrl" value="https://docs.google.com/spreadsheets/d/1SCG9ro_YFF4efbBPNDvH-D7RCTsYvKsZF7sr3qH3bwg/edit?usp=sharing"><br/> 
+  工作表名稱：<input id="sheetName" value="工作表1"><br/> 
+  開始列：<input id="startRow"><br/> 
+  開始欄：<input id="startColumn"><br/>
+  結束列：<input id="endRow"><br/> 
+  結束欄：<input id="endColumn"><br/>
+  <button id="sendBtn">查詢</button> || <button id="sendBtn2">查詢全部</button><br/>
+  <h2 id="show"></h2>
+ 
+  <script>
+  var appUrl = $('#appUrl'),
+  	sheetsUrl = $('#sheetsUrl'),
+    sheetName = $('#sheetName'),
+    startRow = $('#startRow'),
+    startColumn = $('#startColumn'),
+	endRow = $('#endRow'),
+    endColumn = $('#endColumn'),
+    sendBtn = $('#sendBtn'),
+	sendBtn2 = $('#sendBtn2'),
+    show = $('#show');
+	
+  var parameter = {};
+
+//查詢單筆
+  sendBtn.on('click',function() {
+    parameter = {
+      url: sheetsUrl.val(),
+      name: sheetName.val(),
+      startRow: startRow.val()*1,
+      startColumn: startColumn.val()*1
+    };
+	  $.get(appUrl.val(), parameter, function(data) {
+	  	if(!data){
+	    	show.text('無資料');
+	  	}else{
+	    	show.text(data);
+	  	}
+	  });
+  });
+  
+
+//範圍查詢
+  sendBtn2.on('click',function() {
+    parameter = {
+      url: sheetsUrl.val(),
+      name: sheetName.val(),
+      startRow: startRow.val()*1,
+      startColumn: startColumn.val()*1,
+	  endRow: endRow.val()*1,
+      endColumn: endColumn.val()*1
+    };
+	  $.get(appUrl.val(), parameter, function(data) {
+	  	if(!data){
+	    	show.text('無資料');
+	  	}else{
+		var d = data.split(',');  //把傳出來的字串分割成陣列
+		var arr = [];  
+		for(var i=0; i<(parameter.endRow-parameter.startRow+1); i++){
+			arr[i] = d.splice(0, (parameter.endColumn-parameter.startColumn+1)); 
+			show.append(arr[i]+'<br/>');
+			}
+	  	}
+	  });
+  });
+  
+  </script>
+  
+</body>
+
+</html>
